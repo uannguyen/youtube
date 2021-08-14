@@ -2,7 +2,6 @@ import Header from './components/Header/header'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import React from 'react'
 import './style/index.scss'
-import './style/index.css'
 
 function App() {
   return (
