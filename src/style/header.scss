@@ -1,0 +1,29 @@
+.header {
+  background: #3f3567;
+  // background: #353439;
+  height: 75px;
+  width: 100%;
+  padding: 0 25px;
+  color: yellow;
+}
+
+.container {
+  max-width: 940px;
+  padding: 10px auto;
+  ::after {
+    clear: both;
+  }
+}
+
+// Media screen
+@media (min-width: 992px) {
+  .container {
+    max-width: 940px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 728px;
+  }
+}
