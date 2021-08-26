@@ -1,0 +1,123 @@
+$gridTemplaceColumn: 1fr 1fr 1fr 1fr 1fr 1fr;
+$gridTemplateRows: 15rem;
+$gridGap: 20px 10px;
+$padding: 1rem;
+
+.container {
+  width: 100%;
+  height: auto;
+  min-height: 1000px;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+.sidebar {
+  width: 180px;
+  min-width: 180px;
+  height: auto;
+
+  .list-menu {
+    .item {
+      float: left;
+      width: 100%;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 0 24px;
+      cursor: pointer;
+      color: #030303;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+    .selected {
+      background-color: #ccc6c6;
+    }
+  }
+}
+
+
+
+.card-content {
+  padding: $padding;
+  height: auto;
+  display: grid;
+  grid-template-columns: $gridTemplaceColumn;
+  grid-gap: $gridGap;
+  grid-template-rows: $gridTemplateRows;
+  background-color: #f9f9f9;
+
+  @media (max-width: 1650px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: $gridGap;
+    grid-template-rows: $gridTemplateRows;
+  }
+  
+  @media (max-width: 1570px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: $gridGap;
+    grid-template-rows: $gridTemplateRows;
+  }
+
+  @media (max-width: 912px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: $gridGap;
+    grid-template-rows: $gridTemplateRows;
+  }
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: $gridGap;
+    grid-template-rows: $gridTemplateRows;
+  }
+
+  .card-item {
+    .item-detail {
+      img {
+        height: 30px;
+        width: 30px;
+        border-radius: 15px;
+      }
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 16.6% 83.4%;
+      grid-template-rows: 2rem;
+      // .item-detail-left {
+      //   background-color: black;
+      //   height: 20px;
+      //   width: 20px;
+      //   img {
+      //     width: 100%;
+      //     height: 100%;
+      //   }
+      // }
+      .item-detail-right {
+        font-size: 10px;
+        .title {
+          font-size: 12px;
+          overflow: hidden;
+          padding-right: 24px;
+          max-height: 42px;
+          line-height: 15px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          font-weight: bold;
+        }
+        .view::after {
+          content: "•";
+          margin: 0 4px;
+        }
+      }
+    }
+  }
+
+  .card-image {
+    img {
+      width: 100%;
+      height: 10rem;
+    }
+  }
+}
