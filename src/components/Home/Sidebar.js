@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import HomeIcon from '../Icons/HomeIcon'
 
 const Sidebar = (props) => {
 

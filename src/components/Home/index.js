@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Sidebar from './Sidebar'
 import CardList from './CardList'
-const { search } = require('../../api')
+const { search } = require('../../api/api')
 
 const Home = (props) => {
 

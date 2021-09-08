@@ -14,6 +14,8 @@ const CardList = (props) => {
     <div className='card-content'>
       {
         listVideo.map((index, key) => {
+          let title = 'Tik Tok Việt Nam ✔️ Những Khoảnh Khắc Thú Vị'
+          if (index === 3) title = title + 'Tik ToK Video Triệu View #498aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
           return (
             <div key={key} className='card-item'>
               <div className='card-image'>
@@ -21,14 +23,18 @@ const CardList = (props) => {
               </div>
               <div className='item-detail'>
                 <div className='item-detail-left'>
-                <img src={BGround} alt='icon' />
+                  <img src={BGround} alt='icon' />
                 </div>
                 <div className='item-detail-right'>
-                  <span className='title'>Tik Tok Việt Nam ✔️ Những Khoảnh Khắc Thú Vị Tik ToK Video Triệu View #498</span>
-                  <span className='channel'>Bùi Anh Tuấn</span>
+                  <div className='title'>
+                    <span className='title'>{title}</span>
+                  </div>
+                  <div className='channel'>
+                    <span className='channel'>Bùi Anh Tuấn</span>
+                  </div>
                   <div>
-                  <span className='view'>20 Tr view</span>
-                  <span className='timeline'>7 Nam truoc</span>
+                    <span className='view'>20 Tr view</span>
+                    <span className='timeline'>7 Nam truoc</span>
                   </div>
                 </div>
               </div>
