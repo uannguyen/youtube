@@ -1,6 +1,53 @@
-.drawer-topbar-menu {
-  .ant-drawer-content-wrapper {
-    margin: 4rem 1rem;
-    max-height: 30rem;
+.card-image {
+  .image-skeleton {
+    width: 100%;
+  }
+}
+.card-detail-left-skeleton,
+.card-detail-right-skeleton {
+  height: 60px;
+  .ant-skeleton-content {
+    padding-left: 1rem;
+  }
+  .ant-skeleton-title {
+    width: 75% !important;
+    margin: auto 0;
+  }
+  .ant-skeleton-paragraph {
+    margin: 14px 0;
+  }
+}
+.infinite-scroll-component {
+  .ant-btn-loading {
+    position: absolute;
+    left: 50%;
+  }
+}
+
+.sidebar-container {
+  .large-sidebar {
+    .ant-menu-root{
+      width: 10rem;
+    }
+    .ant-menu-item .ant-menu-title-content {
+      margin-left: 15px;
+    }
+  }
+  .small-sidebar {
+    .ant-menu-root{
+      width: 5rem;
+    }
+    .ant-menu-item {
+      flex-direction: column;
+      height: 4rem;
+      padding: 0 !important;
+    }
+    .ant-menu-item-icon {
+      font-size: 20px;
+    }
+    .ant-menu-title-content {
+      font-size: 9px;
+      margin: 0;
+    }
   }
 }

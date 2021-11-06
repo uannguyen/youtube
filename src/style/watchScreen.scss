@@ -1,0 +1,118 @@
+.watch-screen-container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  .wrapper-player-video {
+    position: relative;
+    width: 100%;
+    height: calc((9 / 16) * 100vw);
+    max-height: calc(100vh - 169px);
+    min-height: 480px;
+    background: #000;
+  }
+  //
+  .watch-flexy {
+    .video-metadata {
+      padding: 20px;
+      // min-width: calc(360px * (1/ 0.5625));
+      // max-width: calc((100vh - 216px) * (1/0.5625));
+      .video-info-primary {
+        float: left;
+        width: 100%;
+        .video-info-title {
+          word-break: break-word;
+          font-size: 15px;
+          color: #030303;
+        }
+        .info-primary-content {
+          display: flex;
+          justify-content: space-between;
+          line-height: 2rem;
+          align-items: center;
+          .info-content-left {
+            font-size: 11px;
+            color: #606060;
+          }
+          .info-content-right {
+            display: flex;
+            border-bottom: 1px solid #030303;
+            .like,
+            .dislike {
+              padding: 0 10px;
+              cursor: pointer;
+              .anticon {
+                padding-right: 5px;
+              }
+            }
+          }
+        }
+      }
+      //
+      .video-info-secondary {
+        clear: both;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        .video-info-secondary-title {
+          display: flex;
+          justify-content: space-between;
+          .channel-info {
+            display: flex;
+            align-items: center;
+            .channel-image {
+            }
+            .channel-content {
+              color: #030303;
+              font-weight: 600;
+              font-size: 14px;
+              margin-left: 10px;
+            }
+          }
+          .channel-subscribe {
+            .subscribe-btn {
+              background-color: #cc0000;
+              color: #ffffff;
+            }
+          }
+        }
+
+        // Description video
+        .video-description {
+          box-sizing: border-box;
+          white-space: pre-wrap;
+          margin-left: 2.5rem;
+          height: 60px;
+          overflow: hidden;
+          max-width: 615px;
+        }
+        .description-show-more {
+          height: auto;
+          overflow: unset;
+        }
+      }
+    }
+
+    .video-comment {
+      padding: 1rem 0;
+      .video-comment-title {
+        margin-bottom: 1rem;
+      }
+      .user-comment {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .right-user-comment {
+          width: 95%;
+          .user-comment-action-btn {
+            text-align: end;
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+
+    .list-comment {
+      margin-top: 2rem;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import firebase from 'firebase/app'
-import authFibase from '../../api/firebase'
+import authFibase from '../../../api/firebase'
 
 export const auth:any = createAsyncThunk('app/auth', async (type: string) => {
   try {
@@ -39,9 +39,9 @@ const app = createSlice({
         state.user = null
       }
       if (action?.payload) {
-        const { credential, additionalUserInfo: { profile } } = action.payload
+        const { credential, additionalUserInfo } = action.payload
         state.credential = { ...state.credential, ...credential }
-        state.user = profile
+        state.user = additionalUserInfo?.profile
         state.isLoading = false
       }
      }

@@ -1,7 +1,8 @@
 @import './header.scss';
-@import './wrapper.scss';
 @import './home.scss';
 @import './antd.scss';
+@import './sidebar.scss';
+@import './watchScreen.scss';
 body {
     // background-color: #6f6d72 !important;
     margin: 0;
@@ -15,4 +16,12 @@ body {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
+
+// 
+.avatar-img {
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  object-fit: cover;
+}
   

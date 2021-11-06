@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import logo from '../../images/icon-youtube.png'
 import { Button, Input } from 'antd'
-import { SearchOutlined, UserOutlined } from '@ant-design/icons'
+import { MenuOutlined, MoreOutlined, NotificationOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from '../../stores/toolkit/hooks'
-import { auth } from '../../stores/toolkit/authSlice'
-import TopbarMenu from './TopbarMenu';
-
-const Header = (props) => {
+import { auth } from '../../stores/toolkit/Slice/authSlice'
+import { handleToggleSidebar } from '../../stores/toolkit/Slice/toggleSlice'
+import { useHistory } from 'react-router-dom'
+const Header = () => {
   const dispatch = useAppDispatch()
   const { credential: { accessToken }, user } = useAppSelector(state => state.app)
   const [userInfo, setUserInfo] = useState(null)
   const [token, setToken] = useState(null)
-  const [visible, setVisible] = useState(false)
+  const history = useHistory()
 
   useEffect(() => {
     if (accessToken) localStorage.setItem('accessToken', accessToken)
@@ -28,17 +28,15 @@ const Header = (props) => {
   const handleLogout = () => {
     dispatch(auth('logout'))
     localStorage.clear()
-    setVisible(false)
   }
-
-  const handleShowMenu = () => setVisible(true)
 
   return (
     <div className='header-container'>
-      {console.log('3333333333333333', token)}
-      <div className='logo'>
+      <div onClick={() => history.push('/')} className='logo'>
+        <MenuOutlined onClick={() => dispatch(handleToggleSidebar())} style={{ fontSize: 15 }} />
         <img src={logo} alt='Logo' />
         <span>Youtube</span>
+        <span className='region'>VN</span>
       </div>
       <div className='search'>
         <Input placeholder="input search text" />
@@ -46,16 +44,13 @@ const Header = (props) => {
       </div>
       <div className='login'>
         {
-          token ? <div onClick={handleShowMenu} className='topbar-menu'>
+          token ? <div className='topbar-menu'>
             <img className='avatar-img' src={userInfo.picture} alt='avatar' />
           </div>
             :
             <Button onClick={handleLogin} icon={<UserOutlined />} size="large">Login</Button>
         }
       </div>
-      <TopbarMenu visible={visible} setVisible={setVisible} userInfo={userInfo}
-        handleLogout={handleLogout}
-      />
     </div>
   )
 }
