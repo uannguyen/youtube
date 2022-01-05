@@ -5,14 +5,14 @@ interface ItemSnippet {
   description: string,
   publishedAt: Date,
   title: string,
-  thumbnails: ItemThumbnail[]
+  thumbnails: ItemThumbnail
 }
 
-interface Item {
+export interface ChannelItem {
   id: string,
   snippet: ItemSnippet,
 }
 
 export type IChannel = {
-  items: Item[]
+  items: ChannelItem[]
 }

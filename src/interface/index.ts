@@ -1,5 +1,3 @@
-
-
 export interface IOption {
   action: string
   part?: string,
@@ -43,17 +41,15 @@ interface ItemStatistics {
   viewCount: string
 }
 
-interface Item {
-  id: string,
+export interface VideoItem {
+  id: string | { videoId: string } | any,
   snippet: ItemSnippet,
-  statistics?: ItemStatistics,
-  contentDetails?: {
-    duration: string
-  }
+  statistics?: ItemStatistics | any,
+  contentDetails?: { duration: string } | any
 }
 
 export type IVideo = {
   pageToken?: string,
-  items: Item[]
+  items: VideoItem[]
 }
 

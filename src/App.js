@@ -1,7 +1,7 @@
-import Header from './components/Header/Header'
-import Home from './components/Home/index'
-import Sidebar from './components/Sidebar/Sidebar'
-import WatchScreen from './components/VideoID/index'
+import Header from 'components/Header'
+import Home from 'components/Home'
+import WatchScreen from 'components/VideoID'
+import SearchPage from 'components/Search'
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 
 function App() {
@@ -9,13 +9,15 @@ function App() {
     <div className="App">
       <Router>
         <Header />
-        {/* <Sidebar /> */}
         <Switch>
           <Route exact path='/'>
             <Home />
           </Route>
-          <Route path='/watch/:id'>
+          <Route path='/watch'>
             <WatchScreen />
+          </Route>
+          <Route path='/results'>
+            <SearchPage />
           </Route>
           <Route>
             <Redirect to='/' />

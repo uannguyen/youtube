@@ -1,14 +1,18 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import AuthSlice from './Slice/authSlice'
 import VideoSlice from './Slice/videoSlice'
-import ToggleSlice from './Slice/toggleSlice'
 import CommentSlice from './Slice/commentSlide'
+import VideoSearchSlice from './Slice/videoSearchSlice'
+import UserSlice from './Slice/userSlice'
+import ToggleSlice from './Slice/toggleSlice'
 
 const rootReducer = {
-  app: AuthSlice,
+  auth: AuthSlice,
   video: VideoSlice,
-  toggle: ToggleSlice,
-  comment: CommentSlice
+  comment: CommentSlice,
+  videoSearch: VideoSearchSlice,
+  user: UserSlice,
+  toggle: ToggleSlice
 }
 
 export const store = configureStore({

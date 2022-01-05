@@ -13,12 +13,21 @@ $padding: 1rem;
 
 .card-container {
   width: 100%;
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+    background-color: #aaa;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #696969;
+  }
   .filter-tab {
     display: flex;
-    justify-content: center;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 10px 0;
+    padding: 10px;
+    overflow: auto;
+   
     button {
       margin: 0 5px;
       border-radius: 15px;
@@ -65,47 +74,6 @@ $padding: 1rem;
       grid-template-columns: 1fr 1fr;
       grid-gap: $gridGap;
       // grid-template-rows: $gridTemplateRows;
-    }
-
-    .card-item {
-      cursor: pointer;
-      .card-image {
-        position: relative;
-        img {
-          width: 100%;
-          height: 10rem;
-          object-fit: cover;
-        }
-        .duration {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          background: #2f2f2f;
-          color: #fff;
-          margin: 4px;
-          font-size: 10px;
-        }
-      }
-      .card-detail {
-        margin-top: 10px;
-        display: flex;
-        .card-detail-right {
-          font-size: 10px;
-          padding-left: 10px;
-          flex: 1;
-          .title {
-            font-size: 12px;
-            padding-right: 24px;
-            line-height: 15px;
-            font-weight: bold;
-            word-break: break-all;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-        }
-      }
     }
   }
 }

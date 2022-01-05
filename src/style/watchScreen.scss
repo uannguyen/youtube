@@ -12,16 +12,29 @@
   }
   //
   .watch-flexy {
+    .watch-flexy-content {
+      justify-content: center;
+      // min-width: calc(360px * (1 / 0.5625) + 3 * 24px + 300px);
+      // max-width: calc(1280px + (402px + (3 * 24px)));
+      margin: 0 auto;
+      // .flexy-primary {
+      //   min-width: calc(360px * (1 / 0.5625));
+      //   max-width: calc(100vh - (56px + 24px + 136px) * (1 / 0.5625));
+      // }
+      // .flexy-secondary {
+      //   width: 402px;
+      //   min-width: 320px;
+      // }
+    }
+
     .video-metadata {
       padding: 20px;
-      // min-width: calc(360px * (1/ 0.5625));
-      // max-width: calc((100vh - 216px) * (1/0.5625));
       .video-info-primary {
         float: left;
         width: 100%;
-        .video-info-title {
+        .video-info-primary-title {
           word-break: break-word;
-          font-size: 15px;
+          font-size: 16px;
           color: #030303;
         }
         .info-primary-content {
@@ -29,8 +42,8 @@
           justify-content: space-between;
           line-height: 2rem;
           align-items: center;
+          font-size: 12px;
           .info-content-left {
-            font-size: 11px;
             color: #606060;
           }
           .info-content-right {
@@ -84,6 +97,8 @@
           height: 60px;
           overflow: hidden;
           max-width: 615px;
+          color: #030303;
+          padding-right: 6rem;
         }
         .description-show-more {
           height: auto;
@@ -112,7 +127,32 @@
     }
 
     .list-comment {
-      margin-top: 2rem;
+      .comment-item {
+        .ant-comment-inner {
+          padding: 10px 0;
+        }
+        .ant-comment-content-author-name a {
+          color: #030303 !important;
+          font-weight: 600;
+        }
+      }
     }
+
+      .related-video-load {
+        margin-top: 20px;
+        .card-item {
+          display: flex;
+          padding-bottom: 10px;
+          .card-image {
+            img {
+              width: 168px;
+              height: 94px;
+            }
+          }
+          .card-detail-left {
+            display: none;
+          }
+        }
+      }
   }
 }

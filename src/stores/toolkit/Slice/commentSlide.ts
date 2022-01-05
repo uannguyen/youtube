@@ -2,7 +2,7 @@ import { listCommentByVideoId } from 'api/api'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { IComment } from 'interface/comment'
 
-export const listComment = createAsyncThunk('comment/list', async (options) => {
+export const listComment = createAsyncThunk('comment/list', async (options: any) => {
   return await listCommentByVideoId(options)
 })
 
@@ -39,14 +39,13 @@ const comment = createSlice({
       .addCase(listComment.pending, (state) => { state.isLoading = true })
       .addCase(listComment.rejected, (state, action) => {
         state.isLoading = false
-        // state.error = action.error
       })
       .addCase(listComment.fulfilled, (state, action) => {
-        const { payload } = action
+        const { payload = {}, meta: { arg } } = action
         state.comments.nextPageToken = payload?.nextPageToken
         state.comments.pageInfo = payload?.pageInfo
-        console.log('payload?.pageInfo', payload?.pageInfo)
-        state.comments.items = payload?.items
+        state.comments.items = !arg?.pageToken ? payload?.items :
+        [...state.comments.items , ...payload?.items]
         state.isLoading = false
       })
   }

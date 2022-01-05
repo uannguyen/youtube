@@ -1,30 +1,36 @@
 import { CheckCircleOutlined, DislikeOutlined, LikeOutlined } from '@ant-design/icons'
 import ImageDefault from '../../images/default.jpg'
 import { Avatar, Button } from 'antd';
-import { useState } from 'react';
+import { useState } from 'react'
+import { formatNumeral, formatMoment } from 'utils/index'
+import moment from 'moment'
 
 const VideoMetaData = (props) => {
-  const { item: { snippet: { description } } } = props
+  const { item: { snippet, statistics }, channel: {
+    snippet: { 
+      title: channelTitle,
+      thumbnails: { default: { url: channelThumbnail } }
+     }
+  } } = props
   const [isShowMoreText, setIsShowMoreText] = useState(false)
-
 
   return (
     <>
       <div className='video-info-primary'>
-        <span className='video-info-primary-title'>Câu Chuyện Tình Yêu | Yanbi x Amanda Baby | Official Music Video</span>
+        <span className='video-info-primary-title'>{snippet?.title}</span>
         <div className='info-primary-content'>
           <div className='info-content-left'>
-            <span className='view'>10.496.089 lượt xem</span>
-            <span className='timeline'>3 thg 10, 2013</span>
+            <span className='view'>{formatNumeral(statistics?.viewCount, '0,0')} lượt xem</span>
+            <span className='timeline'>{moment(snippet?.publishedAt).format('ll')}</span>
           </div>
           <div className='info-content-right'>
             <div className='like'>
-              <LikeOutlined style={{ fontSize: '20px' }} />
-              <span>13 N</span>
+              <LikeOutlined style={{ fontSize: '18px' }} />
+              <span>{formatNumeral(statistics?.likeCount, '0.a')}</span>
             </div>
             <div className='dislike'>
-              <DislikeOutlined style={{ fontSize: '20px' }} />
-              <span>15 N</span>
+              <DislikeOutlined style={{ fontSize: '18px' }} />
+              <span>{formatNumeral(statistics?.dislikeCount, '0.a')}</span>
             </div>
           </div>
         </div>
@@ -33,10 +39,11 @@ const VideoMetaData = (props) => {
         <div className='video-info-secondary-title'>
           <div className='channel-info'>
             <div className='channel-image'>
-              <Avatar src={ImageDefault} />
+              <Avatar src={channelThumbnail || ImageDefault} />
             </div>
             <div className='channel-content'>
-              Zing Mp3 <CheckCircleOutlined />
+              {channelTitle}
+              &nbsp;<CheckCircleOutlined />
             </div>
           </div>
           <div className='channel-subscribe'>
@@ -44,7 +51,7 @@ const VideoMetaData = (props) => {
           </div>
         </div>
         <div className={`video-description description-${isShowMoreText && 'show-more'}`}>
-          <span>{description}</span><br />
+          <span>{snippet?.description}</span><br />
         </div>
         <Button style={{ marginLeft: '1.5rem' }} onClick={() => setIsShowMoreText(!isShowMoreText)}
           type='text'>{!isShowMoreText ? 'Hiện thêm' : 'Ẩn bớt'}

@@ -1,52 +1,50 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import firebase from 'firebase/app'
-import authFibase from '../../../api/firebase'
+import { getAccessToken } from 'api/auth'
 
-export const auth:any = createAsyncThunk('app/auth', async (type: string) => {
+export const handleAuth:any = createAsyncThunk('app/auth', async (code) => {
   try {
-    if (type === 'login') {
-      const provider = new firebase.auth.GoogleAuthProvider()
-      const res = await authFibase.signInWithPopup(provider)
-      return res
-    } else if (type === 'logout') await authFibase.signOut()
+    return await getAccessToken(code)
   } catch (error: any) {
     console.log(error.message)
   }
 })
 
-const app = createSlice({
-  name: 'app',
-  initialState: {
-    credential: {
-      accessToken: null
-    },
-    user: null,
-    isLoading: false,
-    error: ''
+interface InitialState {
+  access_token: string
+  refresh_token: string
+  isLoading: boolean
+}
+
+const initialState: InitialState = {
+  access_token: '',
+  refresh_token: '',
+  isLoading: false
+}
+
+const auth = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    logout: (state, action) => {
+      console.log('logout', state, action)
+      // state = { ...state, access_token: '' }
+    }
   },
-  reducers: {},
   extraReducers: {
-    [auth.pending]: (state) => { 
+    [handleAuth.pending]: (state) => { 
       state.isLoading = true
      },
-    [auth.rejected]: (state, action) => { 
+    [handleAuth.rejected]: (state) => { 
       state.isLoading = false
-      state.error = action.error
      },
-    [auth.fulfilled]: (state, action) => { 
-      if (action?.meta?.arg === 'logout') {
-        state.credential = { accessToken: null }
-        state.user = null
-      }
-      if (action?.payload) {
-        const { credential, additionalUserInfo } = action.payload
-        state.credential = { ...state.credential, ...credential }
-        state.user = additionalUserInfo?.profile
-        state.isLoading = false
-      }
+    [handleAuth.fulfilled]: (state, action) => { 
+      state.isLoading = false
+      state.access_token = action?.payload?.access_token
+      state.refresh_token = action?.payload?.refresh_token
      }
   }
 })
 
-const { reducer } = app
+const { reducer } = auth
+export const { logout } = auth.actions
 export default reducer

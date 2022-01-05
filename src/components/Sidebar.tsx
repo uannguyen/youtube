@@ -1,19 +1,22 @@
 import { Menu } from 'antd'
 import { HomeOutlined, PlaySquareOutlined, ExportOutlined } from '@ant-design/icons'
-import { useAppDispatch, useAppSelector } from '../../stores/toolkit/hooks'
+import { useAppDispatch, useAppSelector } from 'stores/toolkit/hooks'
+import { updateUser } from 'stores/toolkit/Slice/userSlice'
 
- const Sidebar = (props) => {
-
+const Sidebar = () => {
+  const dispatch = useAppDispatch()
+  const { userInfo } = useAppSelector(state => state.user)
   const { toggleSidebar } = useAppSelector(state => state.toggle)
-  const handleClick = e => {
-    console.log('click ', e);
-  };
+
+  const handleLogout = () => {
+    dispatch(updateUser(null))
+    localStorage.setItem('userInfo', '')
+  }
 
   return (
     <div className='sidebar-container'>
       <div className={`${toggleSidebar}-sidebar`}>
-      <Menu
-          onClick={handleClick}
+        <Menu
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
           mode="inline"
@@ -24,9 +27,11 @@ import { useAppDispatch, useAppSelector } from '../../stores/toolkit/hooks'
           <Menu.Item key="2" icon={<PlaySquareOutlined />}>
             Kênh đăng ký
           </Menu.Item>
-          <Menu.Item key="3" icon={<ExportOutlined />}>
-            Đăng xuất
-          </Menu.Item>
+          {
+            userInfo && <Menu.Item onClick={handleLogout} key="3" icon={<ExportOutlined />}>
+              Đăng xuất
+            </Menu.Item>
+          }
         </Menu>
       </div>
     </div>

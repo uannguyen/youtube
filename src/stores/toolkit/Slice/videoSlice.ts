@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import API from 'api/api'
 import { IOption, IVideo } from 'interface/index'
-import { IChannel } from 'interface/channel'
+import { ChannelItem } from 'interface/channel'
+import update from 'immutability-helper';
+
 
 export const getVideos: any = createAsyncThunk('video/list', async (options: IOption) => {
   try {
@@ -11,15 +13,15 @@ export const getVideos: any = createAsyncThunk('video/list', async (options: IOp
   }
 })
 
-interface IinitialState {
+interface InitialState {
   isLoading: boolean,
   error: string,
   videos: IVideo,
-  channels: IChannel[],
+  channels: ChannelItem[],
   videoCategoryId: number
 }
 
-const initialState: IinitialState = {
+const initialState: InitialState = {
   isLoading: false,
   error: '',
   videos: {
@@ -47,7 +49,7 @@ const video = createSlice({
         state.videos = {
           ...state.videos,
           items: (arg?.videoCategoryId !== state.videoCategoryId && !arg?.pageToken)
-            ? [...payload?.videos.items]
+            ? payload?.videos.items
             : [...state.videos.items, ...payload?.videos.items],
           pageToken: payload?.videos?.nextPageToken
         }

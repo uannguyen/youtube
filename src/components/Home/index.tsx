@@ -3,15 +3,15 @@ import { useAppSelector, useAppDispatch } from 'stores/toolkit/hooks'
 import { Button } from 'antd'
 import InfiniteScroll from "react-infinite-scroll-component"
 import { PoweroffOutlined } from '@ant-design/icons'
-import Video from './Video'
+import Video from './Video/index'
 import { getVideos } from 'stores/toolkit/Slice/videoSlice'
 import { useHistory } from "react-router-dom";
+import Sidebar from 'components/Sidebar'
 
-const HomePage = (props) => {
+const HomePage = () => {
 
   const dispatch = useAppDispatch()
-  const { videos: { items = [], pageToken }, channels } = useAppSelector(state => state.video)
-  const history = useHistory();
+  const { videos: { items = [], pageToken } } = useAppSelector(state => state.video)
   const [keyword, setKeyword] = useState('Tất cả')
 
   const defaultKeywords = [
@@ -44,35 +44,38 @@ const HomePage = (props) => {
   }
 
   return (
+    <div className='main-container'>
+    <Sidebar />
     <div className='video-container'>
-    <div className='card-container'>
-      <div className='filter-tab'>
-        {
-          defaultKeywords.map((i, index) => {
-            return <Button className={`${keyword === i.key ? 'active' : ''}`}
-              onClick={() => setKeyword(i.key)} key={index}>{i.key}</Button>
-          })
-        }
-      </div>
-      <InfiniteScroll
-        dataLength={items.length}
-        next={fetchMoreData}
-        hasMore={true}
-        loader={<Button type="primary" icon={<PoweroffOutlined />} loading />}
-      >
-        <div className='card-content'>
+      <div className='card-container'>
+        <div className='filter-tab'>
           {
-            (items || []).map((item, index) => {
-              return (
-                <div key={index} onClick={() => history.push(`/watch/${item.id}`)} className='card-item'>
-                  <Video index={index} item={item} />
-                </div>
-              )
+            defaultKeywords.map((i, index) => {
+              return <Button className={`${keyword === i.key ? 'active' : ''}`}
+                onClick={() => setKeyword(i.key)} key={index}>{i.key}</Button>
             })
           }
         </div>
-      </InfiniteScroll>
+        <InfiniteScroll
+          dataLength={items.length}
+          next={fetchMoreData}
+          hasMore={true}
+          loader={<Button type="primary" icon={<PoweroffOutlined />} loading />}
+        >
+          <div className='card-content'>
+            {
+              (items || []).map((item, index) => {
+                return (
+                  <div key={index}>
+                    <Video item={item} videoId={item.id} />
+                  </div>
+                )
+              })
+            }
+          </div>
+        </InfiniteScroll>
 
+      </div>
     </div>
     </div>
   )
