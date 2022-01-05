@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import API from 'api/api'
+import { list } from 'api/api'
 import { IOption, IVideo } from 'interface/index'
 import { ChannelItem } from 'interface/channel'
 import update from 'immutability-helper';
@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 
 export const getVideos: any = createAsyncThunk('video/list', async (options: IOption) => {
   try {
-    return await API.list(options)
+    return await list(options)
   } catch (error: any) {
     console.log(error.message)
   }

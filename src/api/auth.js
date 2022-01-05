@@ -1,4 +1,3 @@
-const axios = require('axios')
 const qs = require('qs')
 const { request } = require('./api')
 const ENDPOINT = 'https://oauth2.googleapis.com/'
@@ -16,7 +15,7 @@ const {
 } = process.env
 
 
-const getLoginUrl = ({ type = 'user' }) => {
+export const getLoginUrl = ({ type = 'user' }) => {
   let params = {
     redirect_uri: REACT_APP_REDIRECT_URL,
     response_type: REACT_APP_RESPONSE_TYPE,
@@ -33,7 +32,7 @@ const getLoginUrl = ({ type = 'user' }) => {
   return url + qs.stringify(params)
 }
 
-const getUserInfo = async (access_token) => {
+export const getUserInfo = async (access_token) => {
   try {
     if (!access_token) return
     const data = await request(
@@ -48,7 +47,7 @@ const getUserInfo = async (access_token) => {
   }
 }
 
-const getAccessToken = async (code) => {
+export const getAccessToken = async (code) => {
   try {
     if (!code) return
     const body = {
@@ -69,7 +68,7 @@ const getAccessToken = async (code) => {
   }
 }
 
-const refreshToken = async (refresh_token) => {
+export const refreshToken = async (refresh_token) => {
   try {
     if (!refresh_token) return
     const body = {
@@ -87,11 +86,4 @@ const refreshToken = async (refresh_token) => {
     console.log('refreshToken', error.message)
     return
   }
-}
-
-module.exports = {
-  getLoginUrl,
-  getUserInfo,
-  getAccessToken,
-  refreshToken
 }

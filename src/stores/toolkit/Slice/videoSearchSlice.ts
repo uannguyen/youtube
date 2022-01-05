@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import API from 'api/api'
+import { search } from 'api/api'
 import { IOption, IVideo } from 'interface/index'
 
 export const searchVideos: any = createAsyncThunk('relatedVideo/list', async (options: IOption) => {
   try {
-    return await API.search(options)
+    return await search(options)
   } catch (error: any) {
     console.log(error.message)
   }

@@ -20,7 +20,7 @@ const request = async (ENDPOINT, method, options) => {
   }
 }
 
-const search = async (options) => {
+export const search = async (options) => {
   try {
     let params = {
       part: 'snippet',
@@ -37,14 +37,14 @@ const search = async (options) => {
       data['items'] = data.items.filter(item => item.snippet)
       const videoIds = []
       const channelIds = []
-      
+
       data.items.forEach(i => { if (i.id.videoId) videoIds.push(i.id.videoId) })
-      
+
       // get detail video & channel thumbnail
       const promises = [getVideoByIds(videoIds)]
       if (params.q) {
-      data.items.forEach(i => { if (i.snippet.channelId) channelIds.push(i.snippet.channelId) })
-      promises.push(getChannelByIds(channelIds))
+        data.items.forEach(i => { if (i.snippet.channelId) channelIds.push(i.snippet.channelId) })
+        promises.push(getChannelByIds(channelIds))
       }
 
       const [videos = [], channels = []] = await Promise.all(promises)
@@ -66,7 +66,7 @@ const search = async (options) => {
   }
 }
 
-const list = async (queries) => {
+export const list = async (queries) => {
   try {
     const params = {
       'part': 'snippet,contentDetails,statistics',
@@ -89,7 +89,7 @@ const list = async (queries) => {
   }
 }
 
-const getVideoById = async (id) => {
+export const getVideoById = async (id) => {
   try {
     if (!id) return
     const params = {
@@ -109,7 +109,7 @@ const getVideoById = async (id) => {
   }
 }
 
-const getVideoByIds = async (ids = []) => {
+export const getVideoByIds = async (ids = []) => {
   try {
     if (!ids.length) return
     const params = {
@@ -125,7 +125,7 @@ const getVideoByIds = async (ids = []) => {
   }
 }
 
-const getChannelByIds = async (ids = []) => {
+export const getChannelByIds = async (ids = []) => {
   try {
     const params = {
       part: 'snippet',
@@ -138,11 +138,11 @@ const getChannelByIds = async (ids = []) => {
     if (!data) return
     return data.items
   } catch (error) {
-    console.log('getChannelByIds', error)
+    console.log('getChannelByIds', error.message)
   }
 }
 
-const getVideoCategories = async () => {
+export const getVideoCategories = async () => {
   try {
     const result = []
     const q = {
@@ -166,7 +166,7 @@ const getVideoCategories = async () => {
   }
 }
 
-const listCommentByVideoId = async (options) => {
+export const listCommentByVideoId = async (options) => {
   try {
     const params = {
       part: 'snippet',
@@ -182,14 +182,4 @@ const listCommentByVideoId = async (options) => {
     console.log('listCommentByVideoId', error.message)
     return null
   }
-}
-
-module.exports = {
-  request,
-  search,
-  list,
-  getVideoCategories,
-  getChannelByIds,
-  getVideoById,
-  listCommentByVideoId
 }
