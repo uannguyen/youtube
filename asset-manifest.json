@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/youtube/static/css/main.828af4ad.chunk.css",
-    "main.js": "/youtube/static/js/main.0e08a9b4.chunk.js",
-    "main.js.map": "/youtube/static/js/main.0e08a9b4.chunk.js.map",
-    "runtime-main.js": "/youtube/static/js/runtime-main.67166044.js",
-    "runtime-main.js.map": "/youtube/static/js/runtime-main.67166044.js.map",
-    "static/css/2.97a13557.chunk.css": "/youtube/static/css/2.97a13557.chunk.css",
-    "static/js/2.14855563.chunk.js": "/youtube/static/js/2.14855563.chunk.js",
-    "static/js/2.14855563.chunk.js.map": "/youtube/static/js/2.14855563.chunk.js.map",
-    "static/js/3.a9794ff1.chunk.js": "/youtube/static/js/3.a9794ff1.chunk.js",
-    "static/js/3.a9794ff1.chunk.js.map": "/youtube/static/js/3.a9794ff1.chunk.js.map",
+    "main.css": "/youtube/static/css/main.74acbd98.chunk.css",
+    "main.js": "/youtube/static/js/main.32e8d1e2.chunk.js",
+    "main.js.map": "/youtube/static/js/main.32e8d1e2.chunk.js.map",
+    "runtime-main.js": "/youtube/static/js/runtime-main.d53b5f9f.js",
+    "runtime-main.js.map": "/youtube/static/js/runtime-main.d53b5f9f.js.map",
+    "static/css/2.14d445f6.chunk.css": "/youtube/static/css/2.14d445f6.chunk.css",
+    "static/js/2.cc71c282.chunk.js": "/youtube/static/js/2.cc71c282.chunk.js",
+    "static/js/2.cc71c282.chunk.js.map": "/youtube/static/js/2.cc71c282.chunk.js.map",
+    "static/js/3.de3f31ec.chunk.js": "/youtube/static/js/3.de3f31ec.chunk.js",
+    "static/js/3.de3f31ec.chunk.js.map": "/youtube/static/js/3.de3f31ec.chunk.js.map",
     "index.html": "/youtube/index.html",
-    "static/css/2.97a13557.chunk.css.map": "/youtube/static/css/2.97a13557.chunk.css.map",
-    "static/css/main.828af4ad.chunk.css.map": "/youtube/static/css/main.828af4ad.chunk.css.map",
-    "static/js/2.14855563.chunk.js.LICENSE.txt": "/youtube/static/js/2.14855563.chunk.js.LICENSE.txt"
+    "static/css/2.14d445f6.chunk.css.map": "/youtube/static/css/2.14d445f6.chunk.css.map",
+    "static/css/main.74acbd98.chunk.css.map": "/youtube/static/css/main.74acbd98.chunk.css.map",
+    "static/js/2.cc71c282.chunk.js.LICENSE.txt": "/youtube/static/js/2.cc71c282.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.67166044.js",
-    "static/css/2.97a13557.chunk.css",
-    "static/js/2.14855563.chunk.js",
-    "static/css/main.828af4ad.chunk.css",
-    "static/js/main.0e08a9b4.chunk.js"
+    "static/js/runtime-main.d53b5f9f.js",
+    "static/css/2.14d445f6.chunk.css",
+    "static/js/2.cc71c282.chunk.js",
+    "static/css/main.74acbd98.chunk.css",
+    "static/js/main.32e8d1e2.chunk.js"
   ]
 }
