@@ -50,7 +50,7 @@ const Header = () => {
     localStorage.setItem('goBackUrl', pathname + search)
   }
 
-  const handleSearch = () => { if (searchText) history.push(`/youtube/results?search_query=${searchText}`) }
+  const handleSearch = () => { if (searchText) history.push(`/results?search_query=${searchText}`) }
 
   const handleKeyDown = (e: any) => {
     if (e.key === 'Enter') handleSearch()
