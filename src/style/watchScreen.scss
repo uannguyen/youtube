@@ -4,11 +4,13 @@
   flex-direction: column;
   .wrapper-player-video {
     position: relative;
+    background: #000;
     width: 100%;
     height: calc((9 / 16) * 100vw);
     max-height: calc(100vh - 169px);
     min-height: 480px;
-    background: #000;
+    .video-player {
+    }
   }
   //
   .watch-flexy {

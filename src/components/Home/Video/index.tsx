@@ -27,7 +27,7 @@ const Video = (props: PropsType) => {
   if (channel) channelBanner = channel.snippet?.thumbnails?.default?.url
 
   const handleNextVideo = () => {
-    history.push(`/watch?v=${videoId}`)
+    history.push(`/youtube/watch?v=${videoId}`)
     window.scrollTo(0,0)
   }
 

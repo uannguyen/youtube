@@ -10,17 +10,17 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route exact path='/'>
+          <Route exact path='/youtube'>
             <Home />
           </Route>
-          <Route path='/watch'>
+          <Route path='/youtube/watch'>
             <WatchScreen />
           </Route>
-          <Route path='/results'>
+          <Route path='/youtube/results'>
             <SearchPage />
           </Route>
           <Route>
-            <Redirect to='/' />
+            <Redirect to='/youtube' />
           </Route>
         </Switch>
       </Router>
