@@ -2,7 +2,7 @@ import { CheckCircleOutlined, DislikeOutlined, LikeOutlined } from '@ant-design/
 import ImageDefault from '../../images/default.jpg'
 import { Avatar, Button } from 'antd';
 import { useState } from 'react'
-import { formatNumeral, formatMoment } from 'utils/index'
+import { formatNumeral } from 'utils'
 import moment from 'moment'
 
 const VideoMetaData = (props) => {

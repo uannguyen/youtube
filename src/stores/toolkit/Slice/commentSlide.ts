@@ -1,4 +1,4 @@
-import { listCommentByVideoId } from 'api/api'
+import { listCommentByVideoId } from 'api'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { IComment } from 'interface/comment'
 

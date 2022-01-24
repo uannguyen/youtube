@@ -3,7 +3,6 @@ import AuthSlice from './Slice/authSlice'
 import VideoSlice from './Slice/videoSlice'
 import CommentSlice from './Slice/commentSlide'
 import VideoSearchSlice from './Slice/videoSearchSlice'
-import UserSlice from './Slice/userSlice'
 import ToggleSlice from './Slice/toggleSlice'
 
 const rootReducer = {
@@ -11,7 +10,6 @@ const rootReducer = {
   video: VideoSlice,
   comment: CommentSlice,
   videoSearch: VideoSearchSlice,
-  user: UserSlice,
   toggle: ToggleSlice
 }
 

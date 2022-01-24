@@ -1,10 +1,11 @@
+import { RequestProps, RequestParams } from "interface/api"
+import config from './config'
 const axios = require('axios')
 const qs = require('qs')
-const delay = require('delay')
 const url = process.env.REACT_APP_ENDPOINT
-const apiKey = process.env.REACT_APP_API_KEY
+const apiKey: string = config.apiKey
 
-const request = async (ENDPOINT, method, options) => {
+export const request = async ({ ENDPOINT, method, options }: RequestProps) => {
   try {
     const config = {
       method,
@@ -14,13 +15,13 @@ const request = async (ENDPOINT, method, options) => {
     const { data } = await axios(config)
     if (data) return data
     return null
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.message)
     return null
   }
 }
 
-export const search = async (options) => {
+export const search = async (reqParams: RequestParams) => {
   try {
     let params = {
       part: 'snippet',
@@ -29,30 +30,34 @@ export const search = async (options) => {
       regionCode: 'VN',
       type: 'video',
       key: apiKey,
-      ...options
+      ...reqParams
     }
-    let data = await request(url + 'search', 'get', { params })
+    let data: any = await request({
+      ENDPOINT: url + 'search',
+      method: 'get',
+      options: { params }
+    })
     // Get Detail Video
     if (data && data.items.length) {
-      data['items'] = data.items.filter(item => item.snippet)
-      const videoIds = []
-      const channelIds = []
+      data['items'] = data.items.filter((item: any) => item.snippet)
+      const videoIds: any = []
+      const channelIds: any = []
 
-      data.items.forEach(i => { if (i.id.videoId) videoIds.push(i.id.videoId) })
+      data.items.forEach((i: any) => { if (i.id.videoId) videoIds.push(i.id.videoId) })
 
       // get detail video & channel thumbnail
       const promises = [getVideoByIds(videoIds)]
       if (params.q) {
-        data.items.forEach(i => { if (i.snippet.channelId) channelIds.push(i.snippet.channelId) })
+        data.items.forEach((i: any) => { if (i.snippet.channelId) channelIds.push(i.snippet.channelId) })
         promises.push(getChannelByIds(channelIds))
       }
 
       const [videos = [], channels = []] = await Promise.all(promises)
 
-      videos.forEach(video => {
+      videos.forEach((video: any) => {
         let { id, contentDetails, statistics } = video
 
-        let index = data.items.findIndex(i => i.id.videoId === id)
+        let index = data.items.findIndex((i: any) => i.id.videoId === id)
 
         data.items[index] = {
           ...data.items[index],
@@ -61,12 +66,12 @@ export const search = async (options) => {
       })
     }
     return data
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.message)
   }
 }
 
-export const list = async (queries) => {
+export const list = async (reqParams: RequestParams) => {
   try {
     const params = {
       'part': 'snippet,contentDetails,statistics',
@@ -74,22 +79,26 @@ export const list = async (queries) => {
       'regionCode': 'VN',
       'key': apiKey,
       'maxResults': 24,
-      ...queries
+      ...reqParams
     }
-    const videos = await request(url + 'videos', 'get', { params })
+    const videos = await request({
+      ENDPOINT: url + 'videos',
+      method: 'get',
+      options: { params }
+    })
     if (!videos || !videos.items) return
     let channelIds = []
-    channelIds = videos.items.map(i => {
+    channelIds = videos.items.map((i: any) => {
       return i.snippet.channelId
     })
     const channels = await getChannelByIds(channelIds)
     return { videos, channels }
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.message)
   }
 }
 
-export const getVideoById = async (id) => {
+export const getVideoById = async (id: string) => {
   try {
     if (!id) return
     const params = {
@@ -97,14 +106,18 @@ export const getVideoById = async (id) => {
       'key': apiKey,
       'id': id
     }
-    const data = await request(url + 'videos', 'get', { params })
+    const data: any = await request({
+      ENDPOINT: url + 'videos',
+      method: 'get',
+      options: { params } 
+    })
     if (data && data.items && data.items.length) {
-      const { snippet } = data.items[0]
-      const channels = await getChannelByIds([snippet.channelId])
+      const { snippet }: any = data.items[0]
+      const channels: any = await getChannelByIds([snippet?.channelId])
       return { video: data.items[0], channel: channels[0] }
     }
     return null
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.message)
   }
 }
@@ -117,43 +130,53 @@ export const getVideoByIds = async (ids = []) => {
       'key': apiKey,
       'id': String(ids)
     }
-    const data = await request(url + 'videos', 'get', { params })
+    const data = await request({
+      ENDPOINT: url + 'videos',
+      method: 'get',
+      options: { params }
+    })
     if (data && data.items && data.items.length) return data.items
     return []
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.message)
   }
 }
 
-export const getChannelByIds = async (ids = []) => {
+export const getChannelByIds = async (ids: any) => {
   try {
     const params = {
       part: 'snippet',
       key: apiKey,
-      id: String(ids)
+      id: String(ids || [])
     }
-    const data = await request(url + 'channels', 'get', {
-      params
+    const data = await request({
+      ENDPOINT: url + 'channels',
+      method: 'get',
+      options: { params }
     })
+  
     if (!data) return
     return data.items
-  } catch (error) {
+  } catch (error: any) {
     console.log('getChannelByIds', error.message)
   }
 }
 
 export const getVideoCategories = async () => {
   try {
-    const result = []
+    const result: any = []
     const q = {
       part: 'snippet',
       regionCode: 'VN',
       key: apiKey,
       hl: 'vi'
     }
-    const { data } = await axios.get(url + 'videoCategories?' + qs.stringify(q))
+    const { data } = await request({
+      ENDPOINT: url + 'videoCategories?' + qs.stringify(q),
+      method: 'get'
+    })
     if (data && data.items.length) {
-      data.items.forEach(item => {
+      data.items.forEach((item: any) => {
         result.push({
           videoCategoryId: item.id,
           title: item.snippet.title
@@ -161,24 +184,28 @@ export const getVideoCategories = async () => {
       })
     }
     return result
-  } catch (error) {
+  } catch (error: any) {
     console.log('getVideoCategories', error.message)
   }
 }
 
-export const listCommentByVideoId = async (options) => {
+export const listCommentByVideoId = async (reqParams: RequestParams) => {
   try {
     const params = {
       part: 'snippet',
       order: 'relevance',
       key: apiKey,
       maxResults: 20,
-      ...options
+      ...reqParams
     }
-    const data = await request(url + 'commentThreads', 'GET', { params })
+    const data = await request({
+      ENDPOINT: url + 'commentThreads',
+      method: 'get',
+      options: { params }
+    })
     if (data) return data
     return null
-  } catch (error) {
+  } catch (error: any) {
     console.log('listCommentByVideoId', error.message)
     return null
   }

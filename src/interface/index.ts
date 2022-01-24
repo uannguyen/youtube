@@ -1,3 +1,7 @@
+export * from 'interface/api'
+export * from 'interface/channel'
+export * from 'interface/comment'
+export * from 'interface/user'
 export interface IOption {
   action: string
   part?: string,

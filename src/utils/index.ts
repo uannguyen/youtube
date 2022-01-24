@@ -1,13 +1,9 @@
 import numeral from 'numeral'
 import moment from 'moment'
 import 'moment/locale/vi'
-import { useAppDispatch } from 'stores/toolkit/hooks'
+import jwt, { Algorithm } from 'jsonwebtoken'
 
-const searchQuery = (useLocation) => {
-  return new URLSearchParams(useLocation.search)
-}
-
-const formatNumeral = (value, type = '0.0a') => {
+export const formatNumeral = (value: string | number, type = '0.0a') => {
   if (!value) return
   let result = numeral(value).format(type)
   result = result
@@ -17,7 +13,7 @@ const formatNumeral = (value, type = '0.0a') => {
   return result
 }
 
-const formatMoment = (value, type) => {
+export const formatMoment = (value: any, type: string | null) => {
   if (!value) return
   switch (type) {
     case 'duration':
@@ -26,12 +22,8 @@ const formatMoment = (value, type) => {
       return _duration
     default:
       return moment(value).fromNow()
-  }
-  
+  }  
 }
 
-export {
-  formatMoment,
-  formatNumeral,
-  searchQuery
-}
+export const decodeAuthToken = (token: string) => jwt.decode(token)
+

@@ -1,22 +1,21 @@
+import { useEffect, useState, useRef } from 'react';
 import MetaData from './VideoMetaData'
 import Comment from './comments/index'
 import Related from './VideoRelated'
-import { useLocation } from "react-router-dom";
-import { useEffect, useState } from 'react';
-import { getVideoById } from 'api/api'
+import { getVideoById } from 'api'
 import { Row, Col } from 'antd'
 import { searchVideos } from 'stores/toolkit/Slice/videoSearchSlice'
 import { useAppDispatch } from 'stores/toolkit/hooks'
-import { searchQuery } from 'utils'
+import { useSearchQuery } from 'components/CustomHook'
 import ReactPlayer from 'react-player/youtube'
 
 const WatchScreen = () => {
+  const dispatch = useAppDispatch()
+  const id: string | any = useSearchQuery('v')
+  let playerRef: any = useRef()
   const [videoItem, setVideoItem] = useState<any>(null)
   const [channel, setChannel] = useState(null)
-  const dispatch = useAppDispatch()
-  const search = searchQuery(useLocation())
-  const id: string | any = search.get('v')
-  const eventTest = document.querySelector('button');
+  const [playing, setPlaying] = useState(true)
 
 
   useEffect(() => {
@@ -29,23 +28,31 @@ const WatchScreen = () => {
     }
   }, [id])
 
-  const opts = {
-    height: '100%',
-    width: '100%',
-    playerVars: {
-      autoplay: 1,
-      modestbranding: 1,
-      disablekb: 0
-    }
+  const handleRef = (e: any) => {
+    playerRef.current = e?.player?.player?.player
   }
 
   const handleEvent = (e: any) => {
+    const currentTime: number = playerRef?.current?.getCurrentTime()
+    const currentVolume: number = playerRef?.current?.getVolume()
     e.preventDefault()
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  }
-
-  const handleDuration = (e: any) => {
-    console.log("handleDuration", e)
+    switch (e.code) {
+      case 'Space':
+        setPlaying(!playing)
+        break;
+      case "ArrowRight":
+        playerRef?.current?.seekTo(currentTime + 10)
+        break;
+      case "ArrowDown":
+        playerRef?.current?.setVolume(currentVolume > 10 ? currentVolume - 10 : 0)
+        break;
+      case "ArrowLeft":
+        playerRef?.current?.seekTo(currentTime > 10 ? currentTime - 10 : 0)
+        break;
+      case "ArrowUp":
+        playerRef?.current?.setVolume(currentVolume + 10)
+        break;
+    }
   }
 
   return (
@@ -57,25 +64,13 @@ const WatchScreen = () => {
           height='100%'
           url={`https://www.youtube.com/watch?v=${id}`}
           controls={true}
+          playing={playing}
           config={{
-           playerVars: {
-             autoplay: 1
-           }
+            playerVars: {
+              autoplay: 1
+            }
           }}
-          // playing={playing}
-          // onReady={() => console.log('onReady')}
-          // onStart={() => console.log('onStart')}
-          // onPlay={this.handlePlay}
-          // onEnablePIP={this.handleEnablePIP}
-          // onDisablePIP={this.handleDisablePIP}
-          // onPause={this.handlePause}
-          // onBuffer={() => console.log('onBuffer')}
-          // onPlaybackRateChange={this.handleOnPlaybackRateChange}
-          onSeek={e => console.log('onSeek', e)}
-          // onEnded={this.handleEnded}
-          // onError={e => console.log('onError', e)}
-          // onProgress={this.handleProgress}
-          onDuration={handleDuration}
+          ref={handleRef}
         />
       </div>
       {

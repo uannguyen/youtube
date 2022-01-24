@@ -1,20 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
 interface CounterState {
-  toggleSidebar: 'large' | 'small'
+  isOpenSidebar: boolean
 }
 
 const initialState = { 
-  toggleSidebar: 'large'
+  isOpenSidebar: false
  } as CounterState
 
 const toggleSlice = createSlice({
   name: 'toggle',
   initialState,
   reducers: {
-    handleToggleSidebar(state) {
-      if (state.toggleSidebar === 'large') state.toggleSidebar = 'small'
-      else state.toggleSidebar = 'large'
+    handleToggleSidebar(state, { payload }) {
+      state.isOpenSidebar = payload
     }
   }
 })

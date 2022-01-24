@@ -5,61 +5,61 @@ import { MenuOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from 'stores/toolkit/hooks'
 import { handleToggleSidebar } from 'stores/toolkit/Slice/toggleSlice'
 import { useHistory, useLocation } from 'react-router-dom'
-import { handleAuth } from 'stores/toolkit/Slice/authSlice'
 import { getLoginUrl } from 'api/auth'
-import { searchQuery } from 'utils/index'
-import { fetchUser, updateUser } from 'stores/toolkit/Slice/userSlice'
+import { useSearchQuery } from 'components/CustomHook'
+import { decodeAuthToken } from 'utils'
+import { handleAuth, updateAuthState } from 'stores/toolkit/Slice/authSlice'
 
 const Header = () => {
   const dispatch = useAppDispatch()
-  const { access_token, refresh_token } = useAppSelector(state => state.auth)
-  const { userInfo } = useAppSelector(state => state.user)
+  const { isOpenSidebar } = useAppSelector(state => state.toggle)
+  const { access_token, id_token, userInfo } = useAppSelector(state => state.auth)
   const history = useHistory()
   const location = useLocation()
-  const search = searchQuery(location)
-
+  const code = useSearchQuery('code')
   const [searchText, setSearchText] = useState('')
 
+  const updateUserInfo = (jwtToken: string | null) => {
+    const idToken = jwtToken || localStorage.getItem('id_token') || ""
+    const decodeValues = decodeAuthToken(idToken)
+    if (decodeValues) dispatch(updateAuthState(decodeValues))
+    return null
+  }
+
   useEffect(() => {
-    const code = search.get('code')
     if (code) {
       const goBackUrl = localStorage.getItem('goBackUrl')
       if (goBackUrl) history.push(goBackUrl)
       dispatch(handleAuth(code))
     }
+    updateUserInfo(null)
   }, [])
 
   useEffect(() => {
-    if (access_token) {
-      localStorage.setItem('access_token', access_token)
-      localStorage.setItem('refresh_token', refresh_token)
-      dispatch(fetchUser(access_token))
-    }
-  }, [access_token])
+    if (access_token) localStorage.setItem('access_token', access_token)
+    if (id_token) {
+      localStorage.setItem('id_token', id_token)
+      updateUserInfo(id_token)
 
-  useEffect(() => {
-    const _userInfo = JSON.parse(localStorage.getItem('userInfo') || 'null')
-    if (_userInfo && !userInfo) dispatch(updateUser(_userInfo))
-    if (userInfo && !_userInfo) {
-      localStorage.setItem('userInfo', JSON.stringify(userInfo))
     }
-  }, [userInfo])
+  }, [access_token, id_token])
 
   const handleClick = () => {
     const { pathname, search } = location
     localStorage.setItem('goBackUrl', pathname + search)
   }
 
-  const handleSearch = () => { if (searchText) history.push(`/results?search_query=${searchText}`) }
+  const handleSearch = () => { 
+    if (searchText) history.push(`/results?search_query=${searchText}`)
+   }
 
   const handleKeyDown = (e: any) => {
     if (e.key === 'Enter') handleSearch()
   }
-
   return (
     <div className='header-container'>
       <div className='header-left'>
-        <MenuOutlined onClick={() => dispatch(handleToggleSidebar())} style={{ fontSize: 15 }} />
+        <MenuOutlined onClick={() => dispatch(handleToggleSidebar(!isOpenSidebar))} style={{ fontSize: 15 }} />
         <div onClick={() => history.push('/')} className='header-logo'>
           <img src={logo} alt='Logo' />
           <span>Youtube</span>
@@ -68,6 +68,7 @@ const Header = () => {
       </div>
       <div className='search'>
         <Input
+          value={searchText}
           placeholder="Tìm kiếm"
           onKeyDown={handleKeyDown}
           onChange={(e) => setSearchText(e.target.value)}
@@ -79,13 +80,12 @@ const Header = () => {
         />
       </div>
       <div className='login'>
-        {console.log('userInfo', userInfo)}
         {
           userInfo ? <div className='topbar-menu'>
             <img className='avatar-img' src={userInfo?.picture} alt='avatar' />
           </div>
             :
-            <Button onClick={handleClick} href={getLoginUrl({ type: 'user' })} icon={<UserOutlined />} size="large">
+            <Button onClick={handleClick} href={getLoginUrl()} icon={<UserOutlined />} size="large">
               Login
             </Button>
         }

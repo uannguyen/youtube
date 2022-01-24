@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { search } from 'api/api'
-import { IOption, IVideo } from 'interface/index'
+import { search } from 'api'
+import { IOption, IVideo } from 'interface'
 
 export const searchVideos: any = createAsyncThunk('relatedVideo/list', async (options: IOption) => {
   try {
@@ -12,7 +12,7 @@ export const searchVideos: any = createAsyncThunk('relatedVideo/list', async (op
 
 interface IinitialState {
   isLoading: boolean,
-  error: string,
+  error?: string,
   videos: IVideo
 }
 

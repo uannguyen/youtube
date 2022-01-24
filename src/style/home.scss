@@ -1,4 +1,4 @@
-$gridGap: 20px 10px;
+$gridGap: 20px 15px;
 
 .video-container {
   width: auto;
@@ -48,7 +48,8 @@ $gridGap: 20px 10px;
     grid-gap: $gridGap;
     background-color: #f9f9f9;
     position: relative;
-    @media (max-width: 1600px) {
+
+     @media (max-width: 1600px) {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       grid-gap: $gridGap;
     }
@@ -65,6 +66,11 @@ $gridGap: 20px 10px;
 
     @media (max-width: 768px) {
       grid-template-columns: 1fr 1fr;
+      grid-gap: $gridGap;
+    }
+
+    @media (max-width: 567px) {
+      grid-template-columns: 1fr;
       grid-gap: $gridGap;
     }
   }

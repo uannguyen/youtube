@@ -1,11 +1,12 @@
 
-import { formatMoment, formatNumeral } from 'utils/index'
+import { formatMoment, formatNumeral } from 'utils'
 import { useAppSelector } from 'stores/toolkit/hooks'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Popover } from 'antd'
 import DefaultIMG from 'images/default.jpg'
 import { useHistory } from "react-router-dom";
 import { VideoItem } from 'interface'
+
 
 type PropsType = {
   item: VideoItem,
@@ -53,7 +54,7 @@ const Video = (props: PropsType) => {
             placement='bottom'
             color='#4a403e'
             content={
-              <span style={{ color: '#fff', fontSize: 16 }}>{title}</span>
+              <span style={{ color: '#fff', fontSize: 14 }}>{title}</span>
             }>
             <span className='title'>{title}</span>
           </Popover>
@@ -61,8 +62,8 @@ const Video = (props: PropsType) => {
             <span className='channel-name'>{channelTitle}</span>
           </div>
           <div className='videoParams'>
-            <span className='view'>{formatNumeral(viewCount, '0.a')} lượt xem</span>
-            <span className='timeline'>{formatMoment(publishedAt)}</span><br />
+            <span className='view'>{formatNumeral(viewCount, '0.0a')} lượt xem</span>
+            <span className='timeline'>{formatMoment(publishedAt, null)}</span><br />
           </div>
           {
             displayPage === 'search' && <span className='video-description'>{description}</span>

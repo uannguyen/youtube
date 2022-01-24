@@ -6,16 +6,13 @@ import { useDispatch } from 'react-redux'
 import { searchVideos } from 'stores/toolkit/Slice/videoSearchSlice'
 import { Button } from 'antd'
 import Video from 'components/Home/Video'
-import { useLocation } from "react-router-dom";
-import { searchQuery } from 'utils'
 import Sidebar from 'components/Sidebar'
+import { useSearchQuery } from 'components/CustomHook'
 
 const Search = () => {
   const { videos: { items = [], pageToken } } = useAppSelector(state => state.videoSearch)
   const dispatch = useDispatch()
-  const search = searchQuery(useLocation())
-
-  const query = search.get('search_query')
+  const query = useSearchQuery('search_query')
 
   useEffect(() => {
     if (query) dispatch(searchVideos({ q: query }))

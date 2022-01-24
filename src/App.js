@@ -13,9 +13,9 @@ function App() {
             <Route exact path='/' component={Home} />
             <Route path='/watch' component={WatchScreen} />
             <Route path='/results' component={SearchPage} />
-            {/* <Route>
+            <Route>
               <Redirect to='/' />
-            </Route> */}
+            </Route>
           </Switch>
       </Router>
     </div>
