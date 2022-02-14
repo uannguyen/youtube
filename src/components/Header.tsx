@@ -5,42 +5,61 @@ import { MenuOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons'
 import { useAppDispatch, useAppSelector } from 'stores/toolkit/hooks'
 import { handleToggleSidebar } from 'stores/toolkit/Slice/toggleSlice'
 import { useHistory, useLocation } from 'react-router-dom'
-import { getLoginUrl } from 'api/auth'
+import { getLoginUrl } from 'api'
 import { useSearchQuery } from 'components/CustomHook'
 import { decodeAuthToken } from 'utils'
-import { handleAuth, updateAuthState } from 'stores/toolkit/Slice/authSlice'
+import { getTokens, updateUser, handleAuth } from 'stores/toolkit/Slice/authSlice'
 
 const Header = () => {
   const dispatch = useAppDispatch()
   const { isOpenSidebar } = useAppSelector(state => state.toggle)
-  const { access_token, id_token, userInfo } = useAppSelector(state => state.auth)
+  const { access_token, refresh_token, id_token, userInfo } = useAppSelector(state => state.auth)
   const history = useHistory()
   const location = useLocation()
   const code = useSearchQuery('code')
   const [searchText, setSearchText] = useState('')
 
+  /*
+    - Get id_token from localStorage
+    - Decode token to JSON
+    - Update user info
+  */
   const updateUserInfo = (jwtToken: string | null) => {
-    const idToken = jwtToken || localStorage.getItem('id_token') || ""
+    const idToken = jwtToken || localStorage.getItem('id_token') || ''
     const decodeValues = decodeAuthToken(idToken)
-    if (decodeValues) dispatch(updateAuthState(decodeValues))
+    if (decodeValues) dispatch(updateUser(decodeValues))
     return null
   }
 
+
   useEffect(() => {
+    /*
+      When redirect from LoginGoogle Form:
+      - check code => redirect to the login event page
+      - get token info
+    */
     if (code) {
       const goBackUrl = localStorage.getItem('goBackUrl')
       if (goBackUrl) history.push(goBackUrl)
-      dispatch(handleAuth(code))
+      dispatch(getTokens(code))
     }
+
+    dispatch(handleAuth())
+
     updateUserInfo(null)
   }, [])
 
+  /*
+    When dependent variable change: 
+      - Saved token
+      - Update user info
+  */
   useEffect(() => {
     if (access_token) localStorage.setItem('access_token', access_token)
+    if (refresh_token) localStorage.setItem('refresh_token', refresh_token)
     if (id_token) {
       localStorage.setItem('id_token', id_token)
       updateUserInfo(id_token)
-
     }
   }, [access_token, id_token])
 
@@ -49,9 +68,9 @@ const Header = () => {
     localStorage.setItem('goBackUrl', pathname + search)
   }
 
-  const handleSearch = () => { 
+  const handleSearch = () => {
     if (searchText) history.push(`/results?search_query=${searchText}`)
-   }
+  }
 
   const handleKeyDown = (e: any) => {
     if (e.key === 'Enter') handleSearch()

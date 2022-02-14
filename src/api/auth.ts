@@ -1,6 +1,7 @@
 import qs from 'qs'
 import { request } from 'api'
 import config from 'api/config'
+import axios from 'axios'
 const ENDPOINT = 'https://oauth2.googleapis.com/'
 
 export const getLoginUrl = () => {
@@ -11,7 +12,8 @@ export const getLoginUrl = () => {
     scope: `${config.userScope} ${config.youtubeScope}`,
     access_type: config.accessType,
     include_granted_scopes: true,
-    state: config.state
+    state: config.state,
+    prompt: 'consent'
   }
   const url = 'https://accounts.google.com/o/oauth2/v2/auth?'
   return url + qs.stringify(params)
@@ -40,7 +42,8 @@ export const getAccessToken = async (code: string) => {
       client_secret: config.clientSecset,
       grant_type: 'authorization_code',
       redirect_uri: config.redirectUrl,
-      code
+      code,
+      access_type: 'offline'
     }
     const data = await request({
       ENDPOINT: ENDPOINT + 'token',
@@ -50,7 +53,6 @@ export const getAccessToken = async (code: string) => {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }
     })
-    console.log("data", data)
     return data
   } catch (error: any) {
     console.log('getAccessToken', error.message)
@@ -58,13 +60,14 @@ export const getAccessToken = async (code: string) => {
   }
 }
 
-export const refreshToken = async () => {
+export const handleRefreshToken = async (refreshToken: string) => {
   try {
+    if (!refreshToken) return
     const body = {
       client_id: config.clientId,
       client_secret: config.clientSecset,
       grant_type: 'refresh_token',
-      refresh_token: config.refreshToken
+      refresh_token: refreshToken
     }
     const data = await request({
       ENDPOINT: ENDPOINT + 'token',
@@ -78,5 +81,13 @@ export const refreshToken = async () => {
   } catch (error: any) {
     console.log('refreshToken', error.message)
     return
+  }
+}
+
+export const isExpiredAccessToken = async (accessToken: string) => {
+  try {
+    return await axios.get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`)
+  } catch (error) {
+    return null
   }
 }

@@ -1,6 +1,3 @@
-
-
-
 export interface RequestProps {
   ENDPOINT: string
   method: string
@@ -13,7 +10,7 @@ export type IOptions = {
   headers?: any
 }
 
-export type RequestParams = {
+export interface RequestParams {
   access_token?: string
   part?: string
   q?: string
@@ -26,6 +23,7 @@ export type RequestParams = {
   hl?: 'vn' | string
   order?: 'relevance' | 'time' | string
   pageToken?: string
+  rate?: 'like' | 'dislike' | 'none'
 }
 
 export type RequestBody = {

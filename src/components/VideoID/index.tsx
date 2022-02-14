@@ -78,7 +78,7 @@ const WatchScreen = () => {
           <Row className='watch-flexy-content'>
             <Col className='flexy-primary' xs={24} sm={24} md={14} lg={15} xl={16} xxl={14}>
               <div className='video-metadata'>
-                <MetaData item={videoItem} channel={channel} />
+                <MetaData videoId={id} item={videoItem} channel={channel} />
                 <Comment videoId={id} videoItem={videoItem} />
               </div>
             </Col>

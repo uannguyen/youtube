@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { list } from 'api'
+import { list, updateRate } from 'api'
 import { IOption, IVideo, ChannelItem } from 'interface'
 
 export const getVideos: any = createAsyncThunk('video/list', async (options: IOption) => {
@@ -15,7 +15,8 @@ interface InitialState {
   error: string,
   videos: IVideo,
   channels: ChannelItem[],
-  videoCategoryId: number
+  videoCategoryId: number,
+  rating: '' | 'like' | 'dislike'
 }
 
 const initialState: InitialState = {
@@ -26,13 +27,18 @@ const initialState: InitialState = {
     pageToken: ''
   },
   channels: [],
-  videoCategoryId: 999
+  videoCategoryId: 999,
+  rating: ''
 }
 
 const video = createSlice({
   name: 'video',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    updateVideoRate: (state, action) => {
+      
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getVideos.pending, (state) => { state.isLoading = true })

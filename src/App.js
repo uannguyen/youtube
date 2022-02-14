@@ -13,9 +13,7 @@ function App() {
             <Route exact path='/' component={Home} />
             <Route path='/watch' component={WatchScreen} />
             <Route path='/results' component={SearchPage} />
-            <Route>
-              <Redirect to='/' />
-            </Route>
+            <Route><Redirect to='/' /></Route>
           </Switch>
       </Router>
     </div>

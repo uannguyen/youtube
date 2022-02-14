@@ -14,10 +14,9 @@ const Comment = (props) => {
   const { videoId, videoItem: { statistics } } = props
   const dispatch = useAppDispatch()
   const {
-    comments: { items, nextPageToken, pageInfo: { totalResults } },
-    isLoading
+    comments: { items, nextPageToken, pageInfo }
   } = useAppSelector(state => state.comment)
-
+  console.log("totalResults", pageInfo)
   const [isOpen, setIsOpen] = useState(false)
   const [orderFilter, setOrderFilter] = useState('relevance')
   const [commentText, setCommentText] = useState('')
@@ -41,7 +40,7 @@ const Comment = (props) => {
     setIsOpen(false)
     setCommentText('')
   }
-
+  if (!pageInfo?.totalResults) return null
   return (
     <div className='video-comment'>
       <div className='video-comment-title'>

@@ -1,21 +1,37 @@
+import React, { useEffect, useState } from 'react'
 import { CheckCircleOutlined, DislikeOutlined, LikeOutlined } from '@ant-design/icons'
-import ImageDefault from '../../images/default.jpg'
-import { Avatar, Button } from 'antd';
-import { useState } from 'react'
+import ImageDefault from 'images/default.jpg'
+import { Avatar, Button } from 'antd'
 import { formatNumeral } from 'utils'
 import moment from 'moment'
+import { updateRate, getRating } from 'api'
+import { useSearchQuery } from 'components/CustomHook'
 
-const VideoMetaData = (props) => {
+const VideoMetaData = (props: any) => {
+  const id: string | any = useSearchQuery('v')
   const { item: { snippet, statistics }, channel: {
-    snippet: { 
+    snippet: {
       title: channelTitle,
       thumbnails: { default: { url: channelThumbnail } }
-     }
+    }
   } } = props
   const [isShowMoreText, setIsShowMoreText] = useState(false)
+  const [rating, setRating] = useState<'none' | 'like' | 'dislike'>('none')
+
+  useEffect(() => {
+    getRating(id).then((data: any) => {
+      if (data?.items[0].rating) setRating(data.items[0].rating)
+    })
+  }, [id])
+
+  const handleRating = async (rate: 'none' | 'like' | 'dislike') => {
+    await updateRate({ rate, id })
+    setRating(rate)
+  }
 
   return (
     <>
+    {console.log("ratingsss", rating)}
       <div className='video-info-primary'>
         <span className='video-info-primary-title'>{snippet?.title}</span>
         <div className='info-primary-content'>
@@ -24,12 +40,18 @@ const VideoMetaData = (props) => {
             <span className='timeline'>{moment(snippet?.publishedAt).format('ll')}</span>
           </div>
           <div className='info-content-right'>
-            <div className='like'>
-              <LikeOutlined style={{ fontSize: '18px' }} />
+            <div onClick={() => handleRating('like')} className='like'>
+              <LikeOutlined style={{
+                fontSize: 20,
+                color: rating === 'like' ? 'red' : 'none'
+              }} />
               <span>{formatNumeral(statistics?.likeCount, '0.a')}</span>
             </div>
-            <div className='dislike'>
-              <DislikeOutlined style={{ fontSize: '18px' }} />
+            <div onClick={() => handleRating('dislike')} className='dislike'>
+              <DislikeOutlined style={{
+                fontSize: 20,
+                color: rating === 'dislike' ? 'red' : 'none'
+              }} />
               <span>{formatNumeral(statistics?.dislikeCount, '0.a')}</span>
             </div>
           </div>

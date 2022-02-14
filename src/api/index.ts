@@ -1,17 +1,24 @@
-import { RequestProps, RequestParams } from "interface/api"
+import { RequestProps, RequestParams } from "interface"
 import config from './config'
+export * from './auth'
 const axios = require('axios')
 const qs = require('qs')
 const url = process.env.REACT_APP_ENDPOINT
 const apiKey: string = config.apiKey
+const accessToken = localStorage.getItem("access_token")
 
 export const request = async ({ ENDPOINT, method, options }: RequestProps) => {
   try {
     const config = {
+      headers: {},
+      params: { key: "" },
       method,
       url: ENDPOINT,
       ...options
     }
+    if (accessToken) config["headers"]["Authorization"] = `Bearer ${accessToken}`
+    else config.params["key"] = apiKey
+
     const { data } = await axios(config)
     if (data) return data
     return null
@@ -29,13 +36,14 @@ export const search = async (reqParams: RequestParams) => {
       maxResults: 20,
       regionCode: 'VN',
       type: 'video',
-      key: apiKey,
       ...reqParams
     }
     let data: any = await request({
       ENDPOINT: url + 'search',
       method: 'get',
-      options: { params }
+      options: { params, headers: {
+        'Authorization': `Bearer ${accessToken}`
+      } }
     })
     // Get Detail Video
     if (data && data.items.length) {
@@ -77,7 +85,6 @@ export const list = async (reqParams: RequestParams) => {
       'part': 'snippet,contentDetails,statistics',
       'chart': 'mostPopular',
       'regionCode': 'VN',
-      'key': apiKey,
       'maxResults': 24,
       ...reqParams
     }
@@ -103,7 +110,6 @@ export const getVideoById = async (id: string) => {
     if (!id) return
     const params = {
       'part': 'snippet,contentDetails,statistics',
-      'key': apiKey,
       'id': id
     }
     const data: any = await request({
@@ -127,7 +133,6 @@ export const getVideoByIds = async (ids = []) => {
     if (!ids.length) return
     const params = {
       'part': 'snippet,contentDetails,statistics',
-      'key': apiKey,
       'id': String(ids)
     }
     const data = await request({
@@ -146,7 +151,6 @@ export const getChannelByIds = async (ids: any) => {
   try {
     const params = {
       part: 'snippet',
-      key: apiKey,
       id: String(ids || [])
     }
     const data = await request({
@@ -168,7 +172,6 @@ export const getVideoCategories = async () => {
     const q = {
       part: 'snippet',
       regionCode: 'VN',
-      key: apiKey,
       hl: 'vi'
     }
     const { data } = await request({
@@ -194,7 +197,6 @@ export const listCommentByVideoId = async (reqParams: RequestParams) => {
     const params = {
       part: 'snippet',
       order: 'relevance',
-      key: apiKey,
       maxResults: 20,
       ...reqParams
     }
@@ -208,5 +210,31 @@ export const listCommentByVideoId = async (reqParams: RequestParams) => {
   } catch (error: any) {
     console.log('listCommentByVideoId', error.message)
     return null
+  }
+}
+
+export const updateRate = async ({ rate, id }: RequestParams): Promise<void> => {
+  try {
+    if (!accessToken || !rate || !id) return
+    console.log("rate, id", rate, id)
+    await axios.post('https://youtube.googleapis.com/youtube/v3/videos/rate?id=urj5ja3Yo08&rating=dislike&access_token=ya29.A0ARrdaM-dqUT3odw4UQSeikIZL1fGy3FBk6RmIqQzo6yQRfwLD8IcQqHxwvNuxsQdM8iDTuYoBBR1xkz3XgRERqAtx-SsYmwqA5XPkGbnsjMZ2iHDteQY2bHgEid2PA5wqH7Qn3jWaui2XukxWD50EeAuMeK_')
+    // await request({
+    //   ENDPOINT: url + `videos/rate?id=${id}&rating=${rate}`,
+    //   method: 'post',
+    // })
+  } catch (error: any) {
+    console.log(error.message)
+  }
+}
+
+export const getRating = async (id: RequestParams): Promise<void> => {
+  try {
+    if (!accessToken || !id) return
+    return await request({
+      ENDPOINT: url + `videos/getRating?id=${id}`,
+      method: 'get'
+    })
+  } catch (error: any) {
+    console.log(error.message)
   }
 }

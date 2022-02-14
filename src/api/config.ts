@@ -12,8 +12,7 @@ const envSchema = Joi.object({
   REACT_APP_API_KEY: Joi.string().required(),
   REACT_APP_CLIENT_ID: Joi.string().required(),
   REACT_APP_CLIENT_SECRET: Joi.string().required(),
-  REACT_APP_JWTSECRET: Joi.string().required(),
-  REACT_APP_REFRESHTOKEN: Joi.string().required()
+  REACT_APP_JWTSECRET: Joi.string().required()
 }).unknown().required()
 
 const { error, value: envVars } = envSchema.validate(process.env)
@@ -31,8 +30,7 @@ const config = {
   apiKey: envVars.REACT_APP_API_KEY,
   clientId: envVars.REACT_APP_CLIENT_ID,
   clientSecset: envVars.REACT_APP_CLIENT_SECRET,
-  jwtSecret: envVars.REACT_APP_JWTSECRET,
-  refreshToken: envVars.REACT_APP_REFRESHTOKEN
+  jwtSecret: envVars.REACT_APP_JWTSECRET
 }
 
 export default config
