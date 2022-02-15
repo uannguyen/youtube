@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react"
 import { useAppSelector, useAppDispatch } from 'stores/toolkit/hooks'
-import { listComment } from 'stores/toolkit/Slice/commentSlide'
+import { listComment, updateComment } from 'stores/toolkit/Slice/commentSlide'
 import { Input, Button, Select, Row, Col } from 'antd'
 import defaultIMG from 'images/default.jpg'
 import CommentID from './Id'
 import InfiniteScroll from "react-infinite-scroll-component"
 import { PoweroffOutlined } from '@ant-design/icons'
 import { formatNumeral } from 'utils/index'
+import { postComment } from "api"
 
 const { Option } = Select
 
-const Comment = (props) => {
+const Comment = (props: any) => {
   const { videoId, videoItem: { statistics } } = props
   const dispatch = useAppDispatch()
   const {
     comments: { items, nextPageToken, pageInfo }
   } = useAppSelector(state => state.comment)
-  console.log("totalResults", pageInfo)
+  const { userInfo } = useAppSelector(state => state.auth)
   const [isOpen, setIsOpen] = useState(false)
   const [orderFilter, setOrderFilter] = useState('relevance')
   const [commentText, setCommentText] = useState('')
@@ -25,7 +26,7 @@ const Comment = (props) => {
     dispatch(listComment({ videoId }))
   }, [videoId])
 
-  const handleChange = (order) => {
+  const handleChange = (order: "relevance" | "time") => {
     setOrderFilter(order)
     if (order) dispatch(listComment({ order, videoId }))
   }
@@ -40,6 +41,20 @@ const Comment = (props) => {
     setIsOpen(false)
     setCommentText('')
   }
+
+  const handlePostComment = async () => {
+    try {
+      const comment = await postComment({ id: videoId, commentText })
+      if (comment) {
+        dispatch(updateComment(comment))
+      }
+      setIsOpen(false)
+      setCommentText('')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  console.log("commentText", commentText)
   if (!pageInfo?.totalResults) return null
   return (
     <div className='video-comment'>
@@ -56,18 +71,18 @@ const Comment = (props) => {
       </div>
       <div className='user-comment'>
         <div className='left-user-comment'>
-          <img className='avatar-img' src={defaultIMG} alt='avatar-img' />
+          <img className='avatar-img' src={userInfo?.picture || defaultIMG} alt='avatar-img' />
         </div>
         <div className='right-user-comment'>
           <Input
             onChange={(e) => setCommentText(e.target.value)}
-            value={commentText} 
-            onFocus={() => setIsOpen(true)} 
+            value={commentText}
+            onFocus={() => setIsOpen(true)}
             placeholder="Bình luận công khai..."
           />
           <div style={{ visibility: isOpen ? 'unset' : 'hidden' }} className='user-comment-action-btn'>
             <Button onClick={handleCancelComment} type='text'>Hủy</Button>
-            <Button disabled={!commentText} type='primary'>Bình luận</Button>
+            <Button onClick={handlePostComment} disabled={!commentText} type='primary'>Bình luận</Button>
           </div>
         </div>
       </div>

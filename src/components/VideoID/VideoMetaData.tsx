@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { CheckCircleOutlined, DislikeOutlined, LikeOutlined } from '@ant-design/icons'
+import React, { useEffect, useState, Fragment } from 'react'
+import { CheckCircleOutlined, DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons'
 import ImageDefault from 'images/default.jpg'
 import { Avatar, Button } from 'antd'
 import { formatNumeral } from 'utils'
 import moment from 'moment'
 import { updateRate, getRating } from 'api'
 import { useSearchQuery } from 'components/CustomHook'
+
+const styleIcon = { fontSize: 20 }
 
 const VideoMetaData = (props: any) => {
   const id: string | any = useSearchQuery('v')
@@ -30,8 +32,7 @@ const VideoMetaData = (props: any) => {
   }
 
   return (
-    <>
-    {console.log("ratingsss", rating)}
+    <Fragment>
       <div className='video-info-primary'>
         <span className='video-info-primary-title'>{snippet?.title}</span>
         <div className='info-primary-content'>
@@ -41,17 +42,15 @@ const VideoMetaData = (props: any) => {
           </div>
           <div className='info-content-right'>
             <div onClick={() => handleRating('like')} className='like'>
-              <LikeOutlined style={{
-                fontSize: 20,
-                color: rating === 'like' ? 'red' : 'none'
-              }} />
+              {
+                rating === 'like' ? <LikeFilled style={styleIcon} /> : <LikeOutlined style={styleIcon} />
+              }
               <span>{formatNumeral(statistics?.likeCount, '0.a')}</span>
             </div>
             <div onClick={() => handleRating('dislike')} className='dislike'>
-              <DislikeOutlined style={{
-                fontSize: 20,
-                color: rating === 'dislike' ? 'red' : 'none'
-              }} />
+              {
+                rating === 'dislike' ? <DislikeFilled style={styleIcon} /> : <DislikeOutlined style={styleIcon} />
+              }
               <span>{formatNumeral(statistics?.dislikeCount, '0.a')}</span>
             </div>
           </div>
@@ -79,7 +78,7 @@ const VideoMetaData = (props: any) => {
           type='text'>{!isShowMoreText ? 'Hiện thêm' : 'Ẩn bớt'}
         </Button>
       </div>
-    </>
+    </Fragment>
   )
 }
 export default VideoMetaData

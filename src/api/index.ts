@@ -216,12 +216,10 @@ export const listCommentByVideoId = async (reqParams: RequestParams) => {
 export const updateRate = async ({ rate, id }: RequestParams): Promise<void> => {
   try {
     if (!accessToken || !rate || !id) return
-    console.log("rate, id", rate, id)
-    await axios.post('https://youtube.googleapis.com/youtube/v3/videos/rate?id=urj5ja3Yo08&rating=dislike&access_token=ya29.A0ARrdaM-dqUT3odw4UQSeikIZL1fGy3FBk6RmIqQzo6yQRfwLD8IcQqHxwvNuxsQdM8iDTuYoBBR1xkz3XgRERqAtx-SsYmwqA5XPkGbnsjMZ2iHDteQY2bHgEid2PA5wqH7Qn3jWaui2XukxWD50EeAuMeK_')
-    // await request({
-    //   ENDPOINT: url + `videos/rate?id=${id}&rating=${rate}`,
-    //   method: 'post',
-    // })
+    await request({
+      ENDPOINT: url + `videos/rate?id=${id}&rating=${rate}`,
+      method: 'post',
+    })
   } catch (error: any) {
     console.log(error.message)
   }
@@ -236,5 +234,32 @@ export const getRating = async (id: RequestParams): Promise<void> => {
     })
   } catch (error: any) {
     console.log(error.message)
+  }
+}
+
+export const postComment = async ({ id, commentText }: RequestParams) => {
+  try {
+    const body = {
+      snippet: {
+        videoId: id,
+        canReply: true,
+        topLevelComment: {
+          snippet: {
+            textOriginal: commentText
+          }
+        }
+      }
+    }
+    return await request({
+      ENDPOINT: url + 'commentThreads',
+      method: 'post',
+      options: {
+        params: { part: 'snippet' },
+        data: body,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    })
+  } catch (error) {
+    
   }
 }

@@ -106,9 +106,9 @@
       .user-comment {
         display: flex;
         justify-content: space-around;
-        align-items: center;
         .right-user-comment {
           width: 95%;
+          padding-left: 5px;
           .user-comment-action-btn {
             text-align: end;
             margin-top: 5px;

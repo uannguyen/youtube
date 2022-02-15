@@ -2,21 +2,26 @@ import qs from 'qs'
 import { request } from 'api'
 import config from 'api/config'
 import axios from 'axios'
+
 const ENDPOINT = 'https://oauth2.googleapis.com/'
+const authScope = [
+  'https://www.googleapis.com/auth/userinfo.profile',
+  'https://www.googleapis.com/auth/youtube',
+  'https://www.googleapis.com/auth/youtube.force-ssl'
+]
 
 export const getLoginUrl = () => {
   let params: any = {
     redirect_uri: config.redirectUrl,
-    response_type: config.responseType,
+    response_type: 'code',
     client_id: config.clientId,
-    scope: `${config.userScope} ${config.youtubeScope}`,
-    access_type: config.accessType,
+    scope: authScope.join(' '),
+    access_type: 'offline',
     include_granted_scopes: true,
-    state: config.state,
+    state: 'state_parameter_passthrough_value',
     prompt: 'consent'
   }
-  const url = 'https://accounts.google.com/o/oauth2/v2/auth?'
-  return url + qs.stringify(params)
+  return 'https://accounts.google.com/o/oauth2/v2/auth?' + qs.stringify(params)
 }
 
 export const getUserInfo = async (access_token: string) => {

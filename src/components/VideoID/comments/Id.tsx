@@ -4,7 +4,7 @@ import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-d
 import moment from 'moment'
 import { formatMoment } from 'utils/index'
 
-const Comments = (props) => {
+const Comments = (props: any) => {
   const { comment: { snippet: {
     topLevelComment: {
       snippet: {
@@ -53,12 +53,12 @@ const Comments = (props) => {
       actions={actions}
       author={<a target='' href={authorChannelUrl}>{authorDisplayName}</a>}
       avatar={<Avatar
-        onClick={() => window.open(authorChannelUrl, '_parent')}
+        // onClick={() => window.open(authorChannelUrl, '_parent')}
         src={authorProfileImageUrl}
         alt={authorDisplayName}
       />}
       content={<p>{textOriginal}</p>}
-      datetime={<span>{formatMoment(publishedAt)}</span>}
+      datetime={<span>{formatMoment(publishedAt, null)}</span>}
     />
   )
 }

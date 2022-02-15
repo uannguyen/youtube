@@ -6,7 +6,7 @@ export interface RequestProps {
 
 export type IOptions = {
   params?: RequestParams
-  data?: RequestBody | string
+  data?: RequestBody | string | any
   headers?: any
 }
 
@@ -24,6 +24,7 @@ export interface RequestParams {
   order?: 'relevance' | 'time' | string
   pageToken?: string
   rate?: 'like' | 'dislike' | 'none'
+  commentText?: string
 }
 
 export type RequestBody = {

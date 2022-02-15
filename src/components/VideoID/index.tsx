@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Fragment } from 'react';
 import MetaData from './VideoMetaData'
 import Comment from './comments/index'
 import Related from './VideoRelated'
@@ -17,7 +17,6 @@ const WatchScreen = () => {
   const [channel, setChannel] = useState(null)
   const [playing, setPlaying] = useState(true)
 
-
   useEffect(() => {
     if (id) {
       getVideoById(id).then(({ video, channel }: any) => {
@@ -33,6 +32,7 @@ const WatchScreen = () => {
   }
 
   const handleEvent = (e: any) => {
+    console.log("eeeeeeeeeeeeeee", e)
     const currentTime: number = playerRef?.current?.getCurrentTime()
     const currentVolume: number = playerRef?.current?.getVolume()
     e.preventDefault()
@@ -56,7 +56,7 @@ const WatchScreen = () => {
   }
 
   return (
-    <div tabIndex={0} onKeyDown={handleEvent} className='watch-screen-container'>
+    <div className='watch-screen-container'>
       <div className='wrapper-player-video'>
         <ReactPlayer
           className='video-player'
@@ -78,7 +78,9 @@ const WatchScreen = () => {
           <Row className='watch-flexy-content'>
             <Col className='flexy-primary' xs={24} sm={24} md={14} lg={15} xl={16} xxl={14}>
               <div className='video-metadata'>
-                <MetaData videoId={id} item={videoItem} channel={channel} />
+                <div onKeyDown={handleEvent}>
+                  <MetaData videoId={id} item={videoItem} channel={channel} />
+                </div>
                 <Comment videoId={id} videoItem={videoItem} />
               </div>
             </Col>

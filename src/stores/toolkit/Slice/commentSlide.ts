@@ -33,7 +33,12 @@ const initialState: {
 const comment = createSlice({
   name: 'comment',
   initialState,
-  reducers: {},
+  reducers: {
+    updateComment: (state, action) => {
+      if (!action?.payload) return
+      state.comments.items = [action.payload, ...state.comments.items]
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(listComment.pending, (state) => { state.isLoading = true })
@@ -42,14 +47,20 @@ const comment = createSlice({
       })
       .addCase(listComment.fulfilled, (state, action) => {
         const { payload = {}, meta: { arg } } = action
-        state.comments.nextPageToken = payload?.nextPageToken
-        state.comments.pageInfo = payload?.pageInfo
-        state.comments.items = !arg?.pageToken ? payload?.items :
-        [...state.comments.items , ...payload?.items]
-        state.isLoading = false
+        return {
+          ...state,
+          comments: {
+            nextPageToken: payload?.nextPageToken,
+            pageInfo: payload?.pageInfo,
+            items: !arg?.pageToken ? payload?.items : [...state.comments.items , ...payload?.items]
+          },
+          isLoading: false
+        }
       })
   }
 })
 
 const { reducer } = comment
+export const { updateComment } = comment.actions
+
 export default reducer
